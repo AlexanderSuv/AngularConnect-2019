@@ -4,10 +4,9 @@
   "description": "Angular Connect 2019",
   "scripts": {
     "watch": "tsc --watch",
+    "watch:sort": "tsc --watch example-sort.ts",
     "serve": "http-server",
-    "postinstall": "./node_modules/.bin/ivy-ngcc; npm run patch",
-    "install-v8-tools": "mkdir -p v8/tools; cd v8; git init; git remote add -f origin git@github.com:v8/v8.git; git config core.sparseCheckout true; echo \"tools\" >> .git/info/sparse-checkout; git pull --depth=1 origin master; cd ..",
-    "patch": "sed -i -e 's|\\}., global\\.ng\\.core..;$|}), global.ng.core, global.ng.core));|g' node_modules/@angular/common/bundles/common.umd.js"
+    "install-v8-tools": "mkdir -p v8/tools; cd v8; git init; git remote add -f origin git@github.com:v8/v8.git; git config core.sparseCheckout true; echo \"tools\" >> .git/info/sparse-checkout; git pull --depth=1 origin master; cd .."
   },
   "repository": {
     "type": "git",
@@ -16,14 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@angular/common": "github:angular/common-builds#master",
-    "@angular/compiler": "github:angular/compiler-builds#master",
-    "@angular/compiler-cli": "github:angular/compiler-cli-builds#master",
-    "@angular/core": "github:angular/core-builds#master",
     "@types/node": "^12.7.5",
-    "deoptigate": "^0.5.0",
-    "http-server": "^0.11.1",
-    "rxjs": "^6.5.3",
+    "deoptigate": "git+ssh://git@github.com/billti/deoptigate.git#master",
     "typescript": "^3.6.3"
   }
 }
