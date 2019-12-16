@@ -1,6 +1,6 @@
 import {performance} from 'perf_hooks';
 
-const MIN_SAMPLE_COUNT_NO_IMPROVEMENT = 2;
+const MIN_SAMPLE_COUNT_NO_IMPROVEMENT = 100;
 const MIN_SAMPLE_DURATION = 2;
 
 const UNITS = ['ms', 'us', 'ns', 'ps'];

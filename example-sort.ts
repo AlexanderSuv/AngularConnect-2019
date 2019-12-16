@@ -3,6 +3,7 @@ import {createBenchmark} from './benchmark';
 import {isSorted} from "./algorithms/sorting/sort";
 import {mergeSort} from "./algorithms/sorting/merge-sort";
 import {iterativeMergeSort} from "./algorithms/sorting/iterative-merge-sort";
+import {heapSort} from "./algorithms/sorting/heap-sort";
 
 const COUNT = Number.parseInt(process.argv[2] || "10");
 
@@ -65,19 +66,9 @@ const iterativeMergeTest = () => {
     benchmark.report();
 };
 
-const iterativeVsRecurrent = () => {
+const HVsRecurrent = () => {
     const label = 'iterativeVsRecurrent';
     const benchmark = createBenchmark(label);
-
-    const RTest = (n: number) => {
-        const time = benchmark(`reccurent: ${n}`);
-        let a = array(n);
-        while (time()) {
-            a = mergeSort(a);
-        }
-        if (!isSorted(a)) throw 'not sorted';
-        return time;
-    };
 
     const ITest = (n: number) => {
         const time = benchmark(`iterative: ${n}`);
@@ -89,9 +80,19 @@ const iterativeVsRecurrent = () => {
         return time;
     };
 
-    [10000000].forEach((n) => {
-        RTest(n);
+    const HTest = (n: number) => {
+        const time = benchmark(`heap: ${n}`);
+        let a = array(n);
+        while (time()) {
+            a = heapSort(a);
+        }
+        if (!isSorted(a)) throw 'not sorted';
+        return time;
+    };
+
+    [100000].forEach((n) => {
         ITest(n);
+        HTest(n);
     });
 
     benchmark.report();
@@ -99,4 +100,4 @@ const iterativeVsRecurrent = () => {
 
 // mergeTest();
 // iterativeMergeTest();
-iterativeVsRecurrent();
+HVsRecurrent();

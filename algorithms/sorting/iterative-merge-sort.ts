@@ -4,7 +4,7 @@ export function iterativeMergeSort<T>(array: T[], compareFn?: (a: T, b: T) => nu
     for (let width = 1; width < array.length; width = width * 2) {
 
         for (let i = 0; i < array.length; i = i + 2 * width) {
-            merge2(array, i, Math.min(i + width, array.length), Math.min(i + 2 * width, array.length), result);
+            merge(array, i, Math.min(i + width, array.length), Math.min(i + 2 * width, array.length), result, compareFn);
         }
 
         array = result.slice();
@@ -12,11 +12,11 @@ export function iterativeMergeSort<T>(array: T[], compareFn?: (a: T, b: T) => nu
     return result;
 }
 
-function merge2<T>(array: T[], l: number, r: number, end: number, result: T[]) {
+function merge<T>(array: T[], l: number, r: number, end: number, result: T[], compareFn?: (a: T, b: T) => number) {
     let i = l;
     let j = r;
     for (let k = l; k < end; k++) {
-        if (i < r && (j >= end || array[i] <= array[j])) {
+        if (i < r && (j >= end || (compareFn ? compareFn(array[i], array[j]) <= 0 : array[i] <= array[j]))) {
             result[k] = array[i];
             i++
         } else {
