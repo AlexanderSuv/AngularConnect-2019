@@ -56,7 +56,7 @@ export class Heap<T> {
         let currentIndex = startIndex;
         let nextIndex = null;
         while (this.hasLeftChild(currentIndex)) {
-            if (this.hasRightChild(currentIndex) && !this.isInCorrectOrder(this.leftChildIndex(currentIndex), this.rightChildIndex(currentIndex))) {
+            if (this.hasRightChild(currentIndex) && this.isInCorrectOrder(this.rightChildIndex(currentIndex), this.leftChildIndex(currentIndex))) {
                 nextIndex = this.rightChildIndex(currentIndex);
             } else {
                 nextIndex = this.leftChildIndex(currentIndex);

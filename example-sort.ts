@@ -1,9 +1,10 @@
 import {insertionSort} from "./algorithms/sorting/insertion-sort";
-import {createBenchmark} from './benchmark';
+import {Benchmark, createBenchmark} from './benchmark';
 import {isSorted} from "./algorithms/sorting/sort";
 import {mergeSort} from "./algorithms/sorting/merge-sort";
 import {iterativeMergeSort} from "./algorithms/sorting/iterative-merge-sort";
 import {heapSort} from "./algorithms/sorting/heap-sort";
+import {quickSort, quickSortInPlace} from "./algorithms/sorting/quick-sort";
 
 const COUNT = Number.parseInt(process.argv[2] || "10");
 
@@ -66,6 +67,25 @@ const iterativeMergeTest = () => {
     benchmark.report();
 };
 
+const quickSortInPlaceTest = () => {
+    const label = 'quickSortInPlace';
+    const benchmark = createBenchmark(label);
+
+    const test = (n: number) => {
+        const time = benchmark(`merge: ${n}`);
+        let a = array(n);
+        while (time()) {
+            a = quickSortInPlace(a);
+        }
+        if (!isSorted(a)) throw 'not sorted';
+        return time;
+    };
+
+    [1000].forEach(test);
+
+    benchmark.report();
+};
+
 const HVsRecurrent = () => {
     const label = 'iterativeVsRecurrent';
     const benchmark = createBenchmark(label);
@@ -74,7 +94,7 @@ const HVsRecurrent = () => {
         const time = benchmark(`iterative: ${n}`);
         let a = array(n);
         while (time()) {
-            a = iterativeMergeSort(a);
+            a = iterativeMergeSort(a.slice());
         }
         if (!isSorted(a)) throw 'not sorted';
         return time;
@@ -84,20 +104,147 @@ const HVsRecurrent = () => {
         const time = benchmark(`heap: ${n}`);
         let a = array(n);
         while (time()) {
-            a = heapSort(a);
+            a = heapSort(a.slice());
         }
         if (!isSorted(a)) throw 'not sorted';
         return time;
     };
 
-    [100000].forEach((n) => {
-        ITest(n);
-        HTest(n);
+    const QTest = (n: number, benchmark: Benchmark) => {
+        const time = benchmark(`quick: ${n}`);
+        let a = array(n);
+        let res: number[] = [];
+        while (time()) {
+            res = quickSort(a.slice());
+        }
+        if (!isSorted(res)) throw 'not sorted';
+        return time;
+    };
+
+    const QInPlaceTest = (n: number, benchmark: Benchmark) => {
+        const time = benchmark(`quick in place: ${n}`);
+        let a = array(n);
+        let res: number[] = [];
+        while (time()) {
+            res = quickSortInPlace(a.slice());
+        }
+        if (!isSorted(res)) throw 'not sorted';
+        return time;
+    };
+
+    [100, 1000, 10000, 100000, 1000000].forEach((n) => {
+        const benchmark = createBenchmark(label + ` ${n}`);
+        // ITest(n);
+        QInPlaceTest(n, benchmark);
+        // HTest(n);
+        QTest(n, benchmark);
+        benchmark.report();
     });
+
+    // benchmark.report();
+};
+
+const qSortTest = (n: number, label = `qSort: ${n}`) => {
+    const a = array(n);
+    console.time(label);
+    const res = quickSortInPlace(a);
+    console.timeEnd(label);
+
+    if (!isSorted(res)) throw 'not sorted';
+};
+
+// [10, 100, 1000, 10000, 100000, 1000000, 10000000].forEach(n => {
+//     console.log('-----');
+//     qSortTest(n);
+//     qSortTest2(n);
+// });
+
+const swapTest = () => {
+    const label = 'swap';
+    const benchmark = createBenchmark(label);
+
+    const destr = () => {
+        const time = benchmark(`destructuring`);
+        let a = array(10);
+        while (time()) {
+            [a[0], a[5]] = [a[5], a[0]]
+        }
+    };
+
+    const tmp = () => {
+        const time = benchmark(`tmp`);
+        let a = array(10);
+
+        function swap(arr: any, index1: number, index2: number) {
+            const tmp = arr[index1];
+            arr[index1] = arr[index2];
+            arr[index2] = tmp;
+        }
+
+        while (time()) {
+            swap(a, 0, 5)
+        }
+    };
+
+    const tmp2 = () => {
+        const time = benchmark(`tmp`);
+        let a = array(10);
+
+        function swap(index1: number, index2: number) {
+            const tmp = a[index1];
+            a[index1] = a[index2];
+            a[index2] = tmp;
+        }
+
+        while (time()) {
+            swap(0, 5)
+        }
+    };
+
+    destr();
+    tmp();
+    tmp2();
 
     benchmark.report();
 };
 
+const concatTest = () => {
+    const label = 'concat';
+    const benchmark = createBenchmark(label);
+
+    const destr = () => {
+        const time = benchmark(`destructuring`);
+        let a1 = array(10);
+        let a2 = array(10);
+        let a3 = array(10);
+        while (time()) {
+            [...a1, ...a2, ...a3];
+        }
+    };
+
+    const concat = () => {
+        const time = benchmark(`concat`);
+        let a1 = array(10);
+        let a2 = array(10);
+        let a3 = array(10);
+
+        while (time()) {
+            a1.concat(a2, a3);
+        }
+    };
+
+    destr();
+    concat();
+
+    benchmark.report();
+};
+
+// concatTest();
+
 // mergeTest();
 // iterativeMergeTest();
 HVsRecurrent();
+// quickSortInPlaceTest();
+
+// console.log(isSorted(quickSortInPlace(array(10000000))));
+// swapTest();
