@@ -19,7 +19,7 @@ function merge<T>(left: T[], right: T[], compareFn?: (a: T, b: T) => number): T[
             r++
         }
     }
-    if (l < left.length) res = res.concat(left.slice(l));
-    if (r < right.length) res = res.concat(right.slice(r));
+    if (l < left.length) res = [...res, ...left.slice(l)];
+    if (r < right.length) res = [...res, ...right.slice(r)];
     return res;
 }

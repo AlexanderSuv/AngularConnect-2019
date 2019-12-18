@@ -8,6 +8,9 @@ import {quickSort, quickSortInPlace} from "./algorithms/sorting/quick-sort";
 
 const COUNT = Number.parseInt(process.argv[2] || "10");
 
+// todo: swap with temp vs destructuring
+// todo: concat array with Array.prototype.concat vs spread operator
+
 const array = (size: number) => new Array(size).fill(null).map(() => Math.round(Math.random() * size));
 
 const insertionTest = () => {
@@ -157,12 +160,12 @@ const sortingPerfTest = () => {
         const label = 'sortingPerfTest';
         const benchmark = createBenchmark(label + ` ${n}`);
 
-        insertionSortTest(n, benchmark);
-        recurrentMergeSortTest(n, benchmark);
+        // insertionSortTest(n, benchmark);
+        // recurrentMergeSortTest(n, benchmark);
         iterativeMergeSortTest(n, benchmark);
-        heapSortTest(n, benchmark);
-        quickSortTest(n, benchmark);
-        quickSortInPlaceTest(n, benchmark);
+        // heapSortTest(n, benchmark);
+        // quickSortTest(n, benchmark);
+        // quickSortInPlaceTest(n, benchmark);
 
         benchmark.report();
     });
