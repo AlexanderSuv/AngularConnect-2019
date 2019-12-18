@@ -156,16 +156,16 @@ const sortingPerfTest = () => {
         return time;
     };
 
-    [100, 1000, 10000, 100000].forEach((n) => {
+    [100, 1000, 10000].forEach((n) => {
         const label = 'sortingPerfTest';
         const benchmark = createBenchmark(label + ` ${n}`);
 
-        // insertionSortTest(n, benchmark);
-        // recurrentMergeSortTest(n, benchmark);
+        insertionSortTest(n, benchmark);
+        recurrentMergeSortTest(n, benchmark);
         iterativeMergeSortTest(n, benchmark);
-        // heapSortTest(n, benchmark);
-        // quickSortTest(n, benchmark);
-        // quickSortInPlaceTest(n, benchmark);
+        heapSortTest(n, benchmark);
+        quickSortTest(n, benchmark);
+        quickSortInPlaceTest(n, benchmark);
 
         benchmark.report();
     });
