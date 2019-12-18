@@ -80,7 +80,9 @@ export class Heap<T> {
     }
 
     private swap(index1: number, index2: number) {
-        [this.array[index1], this.array[index2]] = [this.array[index2], this.array[index1]];
+        const tmp = this.array[index1];
+        this.array[index1] = this.array[index2];
+        this.array[index2] = tmp;
     }
 
 }
